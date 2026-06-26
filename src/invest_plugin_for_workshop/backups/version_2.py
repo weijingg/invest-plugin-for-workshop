@@ -21,8 +21,7 @@ MODEL_SPEC = spec.ModelSpec(
     userguide='',
     input_field_order=[[
         'workspace_dir', 'lulc_raster', 'biophysical_table',
-        # 'aoi_path',  # Uncomment for Version 2
-        # 'birb_population_density_table'  # Uncomment for Version 3
+        'aoi_path'
     ]],
     inputs=[
         spec.WORKSPACE,
@@ -57,42 +56,15 @@ MODEL_SPEC = spec.ModelSpec(
                 ),
             ]
         ),
-        # ########## Uncomment for Version 2 ##################################
-        # spec.VectorInput(
-        #     id="aoi_path",
-        #     name=gettext("area of interest"),
-        #     about=gettext(
-        #         "A map of areas over which to aggregate and summarize the final results."
-        #     ),
-        #     geometry_types={"POLYGON", "MULTIPOLYGON"},
-        #     fields=[]
-        # ),
-        # ########## Uncomment for Version 3 ##################################
-        # spec.CSVInput(
-        #     id="birb_population_density_table",
-        #     name="Birb population density table",
-        #     about=(
-        #         "Table mapping user-defined groups of birbs to their population density in "
-        #         "coniferous and deciduous forest"),
-        #     columns=[
-        #         spec.StringInput(
-        #             id="group",
-        #             about="User-defined birb type or group"
-        #         ),
-        #         spec.NumberInput(
-        #             id="pop_per_ha_coniferous",
-        #             about=(
-        #                 "Population density per hectare of each birb group in coniferous forest"),
-        #             units=None
-        #         ),
-        #         spec.NumberInput(
-        #             id="pop_per_ha_deciduous",
-        #             about=(
-        #                 "Population density per hectare of each birb group in deciduous forest"),
-        #             units=None
-        #         )
-        #     ]
-        # )
+        spec.VectorInput(
+            id="aoi_path",
+            name=gettext("area of interest"),
+            about=gettext(
+                "A map of areas over which to aggregate and summarize the final results."
+            ),
+            geometry_types={"POLYGON", "MULTIPOLYGON"},
+            fields=[]
+        )
     ],
     outputs=[
         spec.SingleBandRasterOutput(
@@ -102,27 +74,18 @@ MODEL_SPEC = spec.ModelSpec(
             data_type=float,
             units=None
         ),
-        # ############ Uncomment for Version 2 ################################
-        # spec.VectorOutput(
-        #     id="aggregated_results_vector",
-        #     path="aggregated_results.gpkg",
-        #     about=(
-        #         "Birb density statistics aggregated over each polygon "
-        #         "in the area of interest vector"),
-        #     fields=[spec.NumberOutput(
-        #         id="number_of_birbs",
-        #         about="Total number of birds projected to exist in each polygon",
-        #         units=None
-        #     )]
-        # ),
-        # ############# Uncomment for Version 3 ###############################
-        # spec.SingleBandRasterOutput(
-        #     id="[GROUP]_count_raster",
-        #     path="[GROUP]_count.tif",
-        #     about="Map of birb group counts per pixel",
-        #     data_type=float,
-        #     units=None
-        # )
+        spec.VectorOutput(
+            id="aggregated_results_vector",
+            path="aggregated_results.gpkg",
+            about=(
+                "Birb density statistics aggregated over each polygon "
+                "in the area of interest vector"),
+            fields=[spec.NumberOutput(
+                id="number_of_birbs",
+                about="Total number of birds projected to exist in each polygon",
+                units=None
+            )]
+        )
     ]
 )
 
@@ -224,60 +187,11 @@ def execute(args):
             'table_name': 'biophysical_table'
         })
 
-
-    # ############# Uncomment for Version 3 ###################################
-    # # Read in the birb population density table as a pandas dataframe
-    # birb_population_density_df = MODEL_SPEC.get_input(
-    #     'birb_population_density_table').get_validated_dataframe(
-    #     args['birb_population_density_table']).set_index('group')
-
-    # birb_group_count_rasters = []
-    # for group, density_values in birb_population_density_df.iterrows():
-    #     # Build a dictionary that maps the group name to its population
-    #     # density in each tree cover type
-    #     density_dict = {
-    #         'none': 0,
-    #         'coniferous': density_values['pop_per_ha_coniferous'],
-    #         'deciduous': density_values['pop_per_ha_deciduous']
-    #     }
-
-    #     # Build a dictionary that maps each lucode to the number of birbs of
-    #     # this group per pixel in that LULC class
-    #     value_map = {
-    #         lucode: density_dict[lucode_to_tree_type[lucode]] * pixel_area_ha
-    #         for lucode in lucode_to_tree_type.keys()
-    #     }
-    #     # Reclassify LULC to birb density using the table
-    #     utils.reclassify_raster(
-    #         raster_path_band=(args['lulc_raster'], 1),
-    #         value_map=value_map,
-    #         target_raster_path=file_registry['[GROUP]_count_raster', group],
-    #         target_datatype=gdal.GDT_Float32,
-    #         target_nodata=-1,
-    #         error_details={
-    #             'raster_name': 'lulc_raster',
-    #             'column_name': 'lucode',
-    #             'table_name': 'biophysical_table'
-    #         })
-    #     birb_group_count_rasters.append(file_registry['[GROUP]_count_raster', group])
-
-    # # Sum up the birb group count rasters to get a total birb count raster
-    # pygeoprocessing.raster_map(
-    #     op=lambda *xs: numpy.sum(xs, axis=0),
-    #     rasters=birb_group_count_rasters,
-    #     target_path=file_registry['birb_count_raster'],
-    #     target_nodata=-1,
-    #     target_dtype=float)
-    ###########################################################################
-
-
-    # ############# Uncomment for Version 2 ###################################
-    # # Aggregate by AOI geometries
-    # aggregate_results(
-    #     raster_path=file_registry['birb_count_raster'],
-    #     source_vector_path=args['aoi_path'],
-    #     target_vector_path=file_registry['aggregated_results_vector'])
-    ###########################################################################
+    # Aggregate by AOI geometries
+    aggregate_results(
+        raster_path=file_registry['birb_count_raster'],
+        source_vector_path=args['aoi_path'],
+        target_vector_path=file_registry['aggregated_results_vector'])
 
     return file_registry.registry
 
