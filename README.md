@@ -16,7 +16,7 @@ Birbs provide many ecosystem services, including seed dispersal, pollination, pe
 ## Model Variants
 This plugin implements three model variants that highlight different features of InVEST plugin development. The variants are designed to be explored in order, since each variant incrementally builds upon the previous variant.
 
-In the outlines that follow, the 🌱 emoji labels items that are new or different compared to the previous iteration (i.e., 🌱 in Variant 2 indicates a change from Variant 1; 🌱 in Variant 3 indicates a change from Variant 3).
+In the outlines that follow, the 🌱 emoji labels items that are new or different compared to the previous iteration (i.e., 🌱 in Variant 2 indicates a change from Variant 1; 🌱 in Variant 3 indicates a change from Variant 2).
 
 ### Variant 1 (Base Model): LULC to Birb Population Raster
 
