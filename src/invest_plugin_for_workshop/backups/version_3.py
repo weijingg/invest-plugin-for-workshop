@@ -135,7 +135,7 @@ def aggregate_results(raster_path, source_vector_path, target_vector_path):
     Returns:
         None
     """
-    # make a copy of the source vecotr, reprojected to the raster's projection
+    # make a copy of the source vector, reprojected to the raster's projection
     pygeoprocessing.reproject_vector(
         base_vector_path=source_vector_path,
         target_projection_wkt=pygeoprocessing.get_raster_info(
