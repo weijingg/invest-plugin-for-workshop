@@ -51,19 +51,6 @@ def report(file_registry: dict, args_dict: dict, model_spec: ModelSpec,
         ``None``
     """
 
-    """
-    inputs:
-    - LULC
-
-    outputs:
-    - birb habitat tif
-    - birb density tif
-    - if avail: birb density
-    - if avail: aggregated results
-    - if avail: [GROUP]_count_raster
-
-    """
-
     output_raster_config_list = [
         RasterPlotConfig(
             raster_path=file_registry['birb_count_raster'],
@@ -73,13 +60,6 @@ def report(file_registry: dict, args_dict: dict, model_spec: ModelSpec,
     ]
 
     if args_dict.get('birb_population_density_table'):
-        output_raster_config_list.append(
-            RasterPlotConfig(
-                raster_path=file_registry['birb_density_raster'],
-                datatype=RasterDatatype.continuous,
-                spec=model_spec.get_output('birb_density_raster')
-            )
-        )
         birb_list = utils.read_csv_to_dataframe(
             args_dict['birb_population_density_table'])['group']
         birb_group_config_list = []
