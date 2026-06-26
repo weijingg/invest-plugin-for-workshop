@@ -13,11 +13,19 @@ from natcap.invest import spec
 from natcap.invest import utils
 
 LOGGER = logging.getLogger(__name__)
+_model_description = gettext(
+    """
+    The Birb Habitat model estimates how many birbs different habitats,
+    defined by Land Use/Land Cover classes, can support. 
+    """
+)
 
 MODEL_SPEC = spec.ModelSpec(
     model_id="birb_habitat",
     model_title=gettext("Birb Habitat"),
     module_name=__name__,
+    about=_model_description,
+    reporter="invest_plugin_for_workshop.reporter",
     userguide='',
     input_field_order=[[
         'workspace_dir', 'lulc_raster', 'biophysical_table',
