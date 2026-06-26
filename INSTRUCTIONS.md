@@ -16,9 +16,9 @@ Some familiarity with Python will be helpful, but is not required.
 1. First, you'll need a copy of the source code. Navigate to the [Birb Habitat plugin repo](https://github.com/natcap/invest-plugin-for-workshop) and select the `Code` button.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="clone_repo-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="clone_repo-light.png">
-  <img alt="" src="clone_repo-dark.png" width="320" />
+  <source media="(prefers-color-scheme: dark)" srcset="./images/clone_repo-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./images/clone_repo-light.png">
+  <img alt="" src="./images/clone_repo-dark.png" width="320" />
 </picture>
 
 2. Choose one of the following:
