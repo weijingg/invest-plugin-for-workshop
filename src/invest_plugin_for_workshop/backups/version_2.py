@@ -15,8 +15,8 @@ from natcap.invest import utils
 LOGGER = logging.getLogger(__name__)
 
 MODEL_SPEC = spec.ModelSpec(
-    model_id="birb_counts",
-    model_title=gettext("Birb Counts"),
+    model_id="birb_habitat",
+    model_title=gettext("Birb Habitat"),
     module_name=__name__,
     userguide='',
     input_field_order=[[
