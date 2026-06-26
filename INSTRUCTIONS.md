@@ -67,7 +67,7 @@ Some familiarity with Python will be helpful, but is not required.
 3. Run the updated plugin and observe the results.
 
 ## Phase 4 (Challenge Exercise)
-Want to push the Birb Habitat model—and your skills—even further? See if you can follow these steps to **add support for an alternate scenario**.
+Want to push the Birb Habitat model—and your skills—even further? See if you can follow these steps to **add support for an alternate LULC scenario**.
 
 ### Tips
 - Some experience with Python and familiarity with geospatial data processing will give you a head start here, but they are not strictly necessary.
@@ -80,15 +80,16 @@ Want to push the Birb Habitat model—and your skills—even further? See if you
 2. Update the model to produce the following additional outputs:
   - **birb_count_alt.tif** (raster, units: None): Map of total number of birbs per pixel under an alternate LULC scenario.
   - **aggregated_results_alt.gpkg** (vector): Birb density statistics under an alternate LULC scenario, aggregated over each polygon in the Area of Interest vector and broken down by birb group.
-3. Update the model to produce one more additional output:
+3. Update the model to produce the following additional outputs:
   - **birb_count_increase.tif** (raster, units: None): Map of total number of birbs per pixel gained under an alternate LULC scenario, when compared to the baseline LULC scenario. A positive number indicates an increase in that pixel's birb population; a negative number indicates a decrease.
+  - **[GROUP]_count_increase.tif** (raster, units: None): Map of number of birbs (in a given birb group) per pixel gained under an alternate LULC scenario, when compared to the baseline LULC scenario. A positive number indicates an increase in that pixel's birb population; a negative number indicates a decrease. One raster is created for each birb group defined in the Birb Population Density Table.
 4. Update the model reporter to include the new inputs and outputs:
   - **Alternate LULC**
   - **birb_count_alt.tif**
   - **aggregated_results_alt.gpkg**
   - **birb_count_increase.tif**
 
-  How and where you add these items to the report is up to you—if you were trying to make sense of the model's results at a glance, how would you want to see them organized? If you're still not sure, or you'd like to see some examples, check out the [Sample Carbon Report](https://storage.googleapis.com/releases.naturalcapitalproject.org/invest-reports/latest/carbon_report_willamette.html) (for baseline/alternate results, a difference map, and an alternate LULC) and/or any of the other [Sample InVEST Reports](http://releases.naturalcapitalproject.org/?prefix=invest-reports/latest/) (for various ways to present vector results).
+    How and where you add these items to the report is up to you—if you were trying to make sense of the model's results at a glance, how would you want to see them organized? If you're still not sure, or you'd like to see some examples, check out the [Sample Carbon Report](https://storage.googleapis.com/releases.naturalcapitalproject.org/invest-reports/latest/carbon_report_willamette.html) (for baseline/alternate results, a difference map, and an alternate LULC) and/or any of the other [Sample InVEST Reports](http://releases.naturalcapitalproject.org/?prefix=invest-reports/latest/) (for various ways to present vector results).
 
 ## Further Exploration
 Ready to get started on your own plugin? The [InVEST Plugins Developer's Guide](https://invest.readthedocs.io/en/latest/plugins.html) is here to help!
