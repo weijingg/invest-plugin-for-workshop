@@ -1,6 +1,8 @@
 import logging
 
+import numpy
 from osgeo import gdal
+from osgeo import ogr
 import pandas as pd
 import pygeoprocessing
 
@@ -19,8 +21,8 @@ MODEL_SPEC = spec.ModelSpec(
     userguide='',
     input_field_order=[[
         'workspace_dir', 'lulc_raster', 'biophysical_table',
-        #'aoi_path',  # Uncomment for Version 2
-        #'birb_population_density_table'  # Uncomment for Version 3
+        # 'aoi_path',  # Uncomment for Version 2
+        # 'birb_population_density_table'  # Uncomment for Version 3
     ]],
     inputs=[
         spec.WORKSPACE,
@@ -64,7 +66,7 @@ MODEL_SPEC = spec.ModelSpec(
         #     ),
         #     geometry_types={"POLYGON", "MULTIPOLYGON"},
         #     fields=[]
-        # )
+        # ),
         # ########## Uncomment for Version 3 ##################################
         # spec.CSVInput(
         #     id="birb_population_density_table",
@@ -81,25 +83,18 @@ MODEL_SPEC = spec.ModelSpec(
         #             id="pop_per_ha_coniferous",
         #             about=(
         #                 "Population density per hectare of each birb group in coniferous forest"),
+        #             units=None
         #         ),
         #         spec.NumberInput(
         #             id="pop_per_ha_deciduous",
         #             about=(
         #                 "Population density per hectare of each birb group in deciduous forest"),
+        #             units=None
         #         )
         #     ]
         # )
     ],
     outputs=[
-        spec.SingleBandRasterOutput(
-            id="birb_habitat_raster",
-            path="birb_habitat.tif",
-            about=(
-                "Map of birb habitat, where 1 indicates a pixel is birb habitat and "
-                "0 indicates it is not"),
-            data_type=int,
-            units=None
-        ),
         spec.SingleBandRasterOutput(
             id="birb_count_raster",
             path="birb_count.tif",
@@ -107,31 +102,27 @@ MODEL_SPEC = spec.ModelSpec(
             data_type=float,
             units=None
         ),
-        # ############# Uncomment for Step 2 ##############################
-        spec.SingleBandRasterOutput(
-            id="birb_density_raster",
-            path="birb_density.tif",
-            about="Map of birb density per hectare",
-            data_type=float,
-            units=None
-        ),
-        spec.SingleBandRasterOutput(
-            id="[GROUP]_count_raster",
-            path="[GROUP]_count.tif",
-            about="Map of birb group counts per pixel",
-            data_type=float,
-            units=None
-        ),
-        spec.CSVOutput(
-            id="aggregated_results",
-            path="aggregated_results.csv",
-            about=(
-                "Birb density statistics aggregated over each polygon "
-                "in the area of interest vector"),
-            columns=[
-                ]
-        ),
-        spec.TASKGRAPH_CACHE
+        # ############ Uncomment for Version 2 ################################
+        # spec.VectorOutput(
+        #     id="aggregated_results_vector",
+        #     path="aggregated_results.gpkg",
+        #     about=(
+        #         "Birb density statistics aggregated over each polygon "
+        #         "in the area of interest vector"),
+        #     fields=[spec.NumberOutput(
+        #         id="number_of_birbs",
+        #         about="Total number of birds projected to exist in each polygon",
+        #         units=None
+        #     )]
+        # ),
+        # ############# Uncomment for Version 3 ###############################
+        # spec.SingleBandRasterOutput(
+        #     id="[GROUP]_count_raster",
+        #     path="[GROUP]_count.tif",
+        #     about="Map of birb group counts per pixel",
+        #     data_type=float,
+        #     units=None
+        # )
     ]
 )
 
@@ -148,12 +139,20 @@ def aggregate_results(raster_path, source_vector_path, target_vector_path):
     Returns:
         None
     """
+    # make a copy of the source vecotr, reprojected to the raster's projection
+    pygeoprocessing.reproject_vector(
+        base_vector_path=source_vector_path,
+        target_projection_wkt=pygeoprocessing.get_raster_info(
+            raster_path)['projection_wkt'],
+        target_path=target_vector_path,
+        driver_name='GPKG')
+
     zonal_stats = pygeoprocessing.zonal_statistics(
         base_raster_path_band=(raster_path, 1),
-        aggregate_vector_path=results_vector_path,
+        aggregate_vector_path=target_vector_path,
         ignore_nodata=True)
 
-    dataset = gdal.OpenEx(results_vector_path, gdal.OF_VECTOR | gdal.GA_Update)
+    dataset = gdal.OpenEx(target_vector_path, gdal.OF_VECTOR | gdal.GA_Update)
     layer = dataset.GetLayer()
 
     # Add the new field to the vector
@@ -164,7 +163,7 @@ def aggregate_results(raster_path, source_vector_path, target_vector_path):
     layer.ResetReading()
     for feature in layer:
         fid = feature.GetFID()
-        feature.SetField('number_of_birbs', zonal_stats[fid]['sum'])
+        feature.SetField('number_of_birbs', float(zonal_stats[fid]['sum']))
         layer.SetFeature(feature)
 
 
@@ -210,6 +209,7 @@ def execute(args):
         lucode: tree_type_to_birb_density[tree_type] * pixel_area_ha
         for lucode, tree_type in lucode_to_tree_type.items()
     }
+    LOGGER.info(lucode_to_birb_count)
 
     # Reclassify LULC to birb count
     utils.reclassify_raster(
@@ -218,32 +218,31 @@ def execute(args):
         target_raster_path=file_registry['birb_count_raster'],
         target_datatype=gdal.GDT_Float32,
         target_nodata=-1,
-        error_details={})
-
-
-    # ############# Uncomment for Version 2 ###################################
-    # # Aggregate by AOI geometries
-    # aggregate_results(
-    #     raster_path=file_registry['birb_count_raster'],
-    #     source_vector_path=args['aoi_path'],
-    #     target_vector_path=file_registry['aggregated_results_vector'])
-    ###########################################################################
+        error_details={
+            'raster_name': 'birb_count_raster',
+            'column_name': 'lucode',
+            'table_name': 'biophysical_table'
+        })
 
 
     # ############# Uncomment for Version 3 ###################################
     # # Read in the birb population density table as a pandas dataframe
     # birb_population_density_df = MODEL_SPEC.get_input(
     #     'birb_population_density_table').get_validated_dataframe(
-    #     args['birb_population_density_table'])
-
-    # # Convert the dataframe into a dictionary that maps each birb group
-    # # to population density values for different tree cover types
-    # value_map = birb_population_density_df.set_index('group').to_dict()
+    #     args['birb_population_density_table']).set_index('group')
 
     # birb_group_count_rasters = []
-    # for group, density_dict in value_map.items():
-    #     # Build a dictionary mapping each lucode to the number of birbs of this
-    #     # group per pixel in that LULC class
+    # for group, density_values in birb_population_density_df.iterrows():
+    #     # Build a dictionary that maps the group name to its population
+    #     # density in each tree cover type
+    #     density_dict = {
+    #         'none': 0,
+    #         'coniferous': density_values['pop_per_ha_coniferous'],
+    #         'deciduous': density_values['pop_per_ha_deciduous']
+    #     }
+
+    #     # Build a dictionary that maps each lucode to the number of birbs of
+    #     # this group per pixel in that LULC class
     #     value_map = {
     #         lucode: density_dict[lucode_to_tree_type[lucode]] * pixel_area_ha
     #         for lucode in lucode_to_tree_type.keys()
@@ -255,7 +254,11 @@ def execute(args):
     #         target_raster_path=file_registry['[GROUP]_count_raster', group],
     #         target_datatype=gdal.GDT_Float32,
     #         target_nodata=-1,
-    #         error_details={})
+    #         error_details={
+    #             'raster_name': 'lulc_raster',
+    #             'column_name': 'lucode',
+    #             'table_name': 'biophysical_table'
+    #         })
     #     birb_group_count_rasters.append(file_registry['[GROUP]_count_raster', group])
 
     # # Sum up the birb group count rasters to get a total birb count raster
@@ -265,7 +268,10 @@ def execute(args):
     #     target_path=file_registry['birb_count_raster'],
     #     target_nodata=-1,
     #     target_dtype=float)
+    ###########################################################################
 
+
+    # ############# Uncomment for Version 2 ###################################
     # # Aggregate by AOI geometries
     # aggregate_results(
     #     raster_path=file_registry['birb_count_raster'],
