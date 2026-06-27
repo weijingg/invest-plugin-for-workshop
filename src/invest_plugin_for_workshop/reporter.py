@@ -110,14 +110,15 @@ def report(file_registry: dict, args_dict: dict, model_spec: ModelSpec,
         agg_results_map_source_list = [
             model_spec.get_output('aggregated_results_vector').path
         ]
+        vector_plot_caption = [
+            model_spec.get_output('aggregated_results_vector')
+            .get_field('number_of_birbs').about
+        ]
     else:
         agg_results_json = None
         agg_results_map_source_list = None
+        vector_plot_caption = None
 
-    vector_plot_caption = [
-        model_spec.get_output('aggregated_results_vector')
-        .get_field('number_of_birbs').about
-    ]
 
     with open(target_html_filepath, 'w', encoding='utf-8') as target_file:
         target_file.write(TEMPLATE.render(
