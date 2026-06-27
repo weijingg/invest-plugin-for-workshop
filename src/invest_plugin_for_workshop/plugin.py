@@ -7,6 +7,7 @@ import pandas as pd
 import pygeoprocessing
 
 from natcap.invest.file_registry import FileRegistry
+from natcap.invest.unit_registry import u
 from natcap.invest import validation
 from natcap.invest import gettext
 from natcap.invest import spec
@@ -43,14 +44,14 @@ MODEL_SPEC = spec.ModelSpec(
             id="lulc_raster",
             name="LULC",
             data_type=int,
-            about="Land use/land cover raster",
+            about="Land use/land cover raster.",
             units=None
         ),
         spec.CSVInput(
             id="biophysical_table",
             name="Biophysical table",
             about=(
-                "Table mapping each LULC code to the type of tree cover on that LULC class"),
+                "Table mapping each LULC code to the type of tree cover on that LULC class."),
             columns=[
                 spec.IntegerInput(
                     id="lucode",
@@ -61,11 +62,11 @@ MODEL_SPEC = spec.ModelSpec(
                 ),
                 spec.OptionStringInput(
                     id="tree_type",
-                    about=gettext("Type of tree cover on each LULC class"),
+                    about=gettext("Type of tree cover on each LULC class."),
                     options=[
-                        spec.Option(key="coniferous", description="Predominantly coniferous tree cover"),
-                        spec.Option(key="deciduous", description="Predominantly deciduous tree cover"),
-                        spec.Option(key="none", description="No tree cover")
+                        spec.Option(key="coniferous", about="Predominantly coniferous tree cover."),
+                        spec.Option(key="deciduous", about="Predominantly deciduous tree cover."),
+                        spec.Option(key="none", about="No tree cover.")
                     ]
                 ),
             ]
@@ -86,22 +87,22 @@ MODEL_SPEC = spec.ModelSpec(
         #     name="Birb population density table",
         #     about=(
         #         "Table mapping user-defined groups of birbs to their population density in "
-        #         "coniferous and deciduous forest"),
+        #         "coniferous and deciduous forest."),
         #     columns=[
         #         spec.StringInput(
         #             id="group",
-        #             about="User-defined birb type or group"
+        #             about="User-defined birb type or group."
         #         ),
         #         spec.NumberInput(
         #             id="pop_per_ha_coniferous",
         #             about=(
-        #                 "Population density per hectare of each birb group in coniferous forest"),
+        #                 "Population density per hectare of each birb group in coniferous forest."),
         #             units=None
         #         ),
         #         spec.NumberInput(
         #             id="pop_per_ha_deciduous",
         #             about=(
-        #                 "Population density per hectare of each birb group in deciduous forest"),
+        #                 "Population density per hectare of each birb group in deciduous forest."),
         #             units=None
         #         )
         #     ]
@@ -111,9 +112,9 @@ MODEL_SPEC = spec.ModelSpec(
         spec.SingleBandRasterOutput(
             id="birb_count_raster",
             path="birb_count.tif",
-            about="Map of total number of birbs per pixel",
+            about="Map of total number of birbs per pixel.",
             data_type=float,
-            units=None
+            units=u.none
         ),
         # ############ Uncomment for Version 2 ################################
         # spec.VectorOutput(
@@ -121,20 +122,20 @@ MODEL_SPEC = spec.ModelSpec(
         #     path="aggregated_results.gpkg",
         #     about=(
         #         "Birb density statistics aggregated over each polygon "
-        #         "in the area of interest vector"),
+        #         "in the area of interest vector."),
         #     fields=[spec.NumberOutput(
         #         id="number_of_birbs",
-        #         about="Total number of birbs projected to exist in each polygon",
-        #         units=None
+        #         about="Total number of birbs projected to exist in each polygon.",
+        #         units=u.none
         #     )]
         # ),
         # ############# Uncomment for Version 3 ###############################
         # spec.SingleBandRasterOutput(
         #     id="[GROUP]_count_raster",
         #     path="[GROUP]_count.tif",
-        #     about="Map of birb group counts per pixel",
+        #     about="Map of birb group counts per pixel.",
         #     data_type=float,
-        #     units=None
+        #     units=u.none
         # )
     ]
 )
