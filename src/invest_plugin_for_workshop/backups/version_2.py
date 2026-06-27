@@ -82,7 +82,7 @@ MODEL_SPEC = spec.ModelSpec(
                 "in the area of interest vector"),
             fields=[spec.NumberOutput(
                 id="number_of_birbs",
-                about="Total number of birds projected to exist in each polygon",
+                about="Total number of birbs projected to exist in each polygon",
                 units=None
             )]
         )
