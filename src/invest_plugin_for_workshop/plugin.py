@@ -15,8 +15,13 @@ from natcap.invest import utils
 LOGGER = logging.getLogger(__name__)
 _model_description = gettext(
     """
-    The Birb Habitat model estimates how many birbs different habitats,
-    defined by Land Use/Land Cover classes, can support. 
+    Birbs provide many ecosystem services, including seed dispersal,
+    pollination, pest control, sanitation, soundscape enhancement, and
+    recreation opportunities (e.g., backyard birbing, birbing-related travel).
+    The Birb Habitat model estimates a landscape's capacity to support birb
+    populations based on tree cover. While the Birb Habitat model is loosely
+    inspired by real-world ecosystem services modeling, it is not backed by
+    science and should not be used for any serious, real-world modeling.
     """
 )
 
@@ -26,7 +31,7 @@ MODEL_SPEC = spec.ModelSpec(
     module_name=__name__,
     about=_model_description,
     reporter="invest_plugin_for_workshop.reporter",
-    userguide='',
+    userguide='https://github.com/natcap/invest-plugin-for-workshop/blob/main/README.md',
     input_field_order=[[
         'workspace_dir', 'lulc_raster', 'biophysical_table',
         # 'aoi_path',  # Uncomment for Version 2
