@@ -1,7 +1,0 @@
-{
-    "args": {
-        "biophysical_table": "biophysical_table.csv",
-        "lulc_raster": "LULC.tif"
-    },
-    "model_id": "birb_habitat"
-}
