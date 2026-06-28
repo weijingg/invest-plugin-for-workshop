@@ -1,13 +1,11 @@
 import logging
 import time
 
-import altair
 import geopandas
 import jinja2
-import numpy
 import os
 
-from natcap.invest import utils, validation
+from natcap.invest import utils
 from natcap.invest import __version__
 from natcap.invest.reports import raster_utils, report_constants, \
     vector_utils

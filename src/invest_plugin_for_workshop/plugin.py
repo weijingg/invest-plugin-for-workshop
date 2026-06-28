@@ -3,7 +3,6 @@ import logging
 import numpy
 from osgeo import gdal
 from osgeo import ogr
-import pandas as pd
 import pygeoprocessing
 
 from natcap.invest.file_registry import FileRegistry
