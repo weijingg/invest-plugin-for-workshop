@@ -9,7 +9,6 @@ import os
 
 from natcap.invest import utils, validation
 from natcap.invest import __version__
-from natcap.invest import gettext
 from natcap.invest.reports import raster_utils, report_constants, \
     vector_utils
 from natcap.invest.spec import ModelSpec

@@ -9,12 +9,11 @@ import pygeoprocessing
 from natcap.invest.file_registry import FileRegistry
 from natcap.invest.unit_registry import u
 from natcap.invest import validation
-from natcap.invest import gettext
 from natcap.invest import spec
 from natcap.invest import utils
 
 LOGGER = logging.getLogger(__name__)
-_model_description = gettext(
+_model_description = (
     """
     Birbs provide many ecosystem services, including seed dispersal,
     pollination, pest control, sanitation, soundscape enhancement, and
@@ -28,7 +27,7 @@ _model_description = gettext(
 
 MODEL_SPEC = spec.ModelSpec(
     model_id="birb_habitat",
-    model_title=gettext("Birb Habitat"),
+    model_title="Birb Habitat",
     module_name=__name__,
     about=_model_description,
     reporter="invest_plugin_for_workshop.reporter",
@@ -62,7 +61,7 @@ MODEL_SPEC = spec.ModelSpec(
                 ),
                 spec.OptionStringInput(
                     id="tree_type",
-                    about=gettext("Type of tree cover on each LULC class."),
+                    about="Type of tree cover on each LULC class.",
                     options=[
                         spec.Option(key="coniferous", about="Predominantly coniferous tree cover."),
                         spec.Option(key="deciduous", about="Predominantly deciduous tree cover."),
@@ -75,8 +74,8 @@ MODEL_SPEC = spec.ModelSpec(
         # ########## Uncomment for Version 2 ##################################
         # spec.VectorInput(
         #     id="aoi_path",
-        #     name=gettext("area of interest"),
-        #     about=gettext(
+        #     name="area of interest",
+        #     about=(
         #         "A map of areas over which to aggregate and summarize the final results."
         #     ),
         #     geometry_types={"POLYGON", "MULTIPOLYGON"},
