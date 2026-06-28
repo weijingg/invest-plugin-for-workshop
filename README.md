@@ -40,6 +40,7 @@ In the outlines that follow, the 🌱 emoji labels items that are new or differe
 
 #### Outputs
 - **birb_count.tif** (raster, units: None): Map of total number of birbs per pixel.
+- **birb_habitat_report.html** (HTML file): A summary of a model run, including visualizations of key outputs and inputs. The report can be opened with any web browser.
 
 ### Variant 2: Add AOI Input and Aggregated Results Output
 
@@ -65,6 +66,7 @@ In the outlines that follow, the 🌱 emoji labels items that are new or differe
 
 #### Outputs
 - **birb_count.tif** (raster, units: None): Map of total number of birbs per pixel.
+- **birb_habitat_report.html** (HTML file): A summary of a model run, including visualizations of key outputs and inputs. The report can be opened with any web browser.
 - 🌱 **aggregated_results.gpkg** (vector): Birb density statistics aggregated over each polygon in the Area of Interest vector.
 
 ### Variant 3: Add Birb Groups and User-Defined Population Density
@@ -98,7 +100,8 @@ In the outlines that follow, the 🌱 emoji labels items that are new or differe
 
 #### Outputs
 - **birb_count.tif** (raster, units: None): Map of total number of birbs per pixel.
-- 🌱 **aggregated_results.gpkg** (vector): Birb density statistics aggregated over each polygon in the Area of Interest vector and broken down by birb group.
+- **birb_habitat_report.html** (HTML file): A summary of a model run, including visualizations of key outputs and inputs. The report can be opened with any web browser.
+- **aggregated_results.gpkg** (vector): Birb density statistics aggregated over each polygon in the Area of Interest vector.
 - 🌱 **[GROUP]_count.tif** (raster, units: None): Map of birb group counts per pixel. One raster is created for each birb group defined in the Birb Population Density Table.
 
 ## Sample Data
