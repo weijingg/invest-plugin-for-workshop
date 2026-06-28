@@ -75,7 +75,9 @@ Some familiarity with Python will be helpful, but is not required.
     <img alt="" src="./images/open_workspace_button.png" width="185" />
 
 ## Phase 2
-1. Before we make changes to the plugin code, we'll do some configuration that will allow us to run the updated plugin in the Workbench without having to uninstall and reinstall the plugin each time we want to try out our updates. (Using the Workbench to uninstall and reinstall a plugin works fine, but since it's a bit time-consuming, it can be inconvenient during plugin development.)
+1. [Optional, but recommended] Before we make changes to the plugin code, we'll do some configuration that will allow us to run the updated plugin in the Workbench without having to uninstall and reinstall the plugin each time we want to try out our updates.
+
+    **If you don't have conda or mamba installed**, you can use the `Manage Plugins` feature in the Workbench to uninstall and reinstall the plugin whenever you want to test your updated plugin code. Since installation via the Workbench takes a little longer, it can be inconvenient during plugin development, which is why we recommend the following alternative.
 
     1. When we installed the plugin the first time, the Workbench created a dedicated virtual environment for it. We'll need the path to that environment, which is stored in a config file. First, we need to find that config file, whose location varies depending on your operating system.
 
@@ -98,6 +100,10 @@ Some familiarity with Python will be helpful, but is not required.
 2. Return to your code editor and open the plugin module ([src/invest_plugin_for_workshop/plugin.py](./src/invest_plugin_for_workshop/plugin.py)).
 
 3. Search `plugin.py` for `Uncomment for Version 2`, and uncomment each section labeled with `Uncomment for Version 2`. As you uncomment each section, notice what this new code is adding to the model.
+
+    **Pro tip**: in many text editors, you can select multiple lines of text, then press `Ctrl` + `/` (on Windows) or `⌘` + `/` (`Command-Slash`, on macOS) to comment/uncomment all those lines at once.
+
+    **Note**: when commenting/uncommenting code, it's not uncommon to mistakenly comment/uncomment too few or too many lines, landing your code in an awkward "in-between" state. If at any point you find your code has become broken and you're not sure why, you can check the files in the `backups` folder in this repo. For example, if you're working on Version 2, take a look at `backups/version_2.py` for a complete copy of the Version 2 code—no commenting/uncommenting needed. You can use the "backup" code as a reference to debug your own, or if you're stuck, you can delete everything from `plugin.py` and then copy and paste the entire contents of `backups/version_2.py` into `plugin.py`.
 
 4. Save your changes to `plugin.py`.
 
