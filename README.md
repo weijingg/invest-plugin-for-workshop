@@ -96,7 +96,7 @@ In the outlines that follow, the 🌱 emoji labels items that are new or differe
 1. Map LULC to tree type raster.
 2. 🌱 Calculate number of birbs in each group per pixel, based on pixel area and birbs-per-hectare values defined in the Birb Population Density Table.
 3. 🌱 Calculate total number of birbs (across all groups) per pixel.
-4. 🌱 Aggregate number of birbs in each group by AOI feature.
+4. Aggregate total number of birbs by AOI feature.
 
 #### Outputs
 - **birb_count.tif** (raster, units: None): Map of total number of birbs per pixel.
