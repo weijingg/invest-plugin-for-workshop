@@ -71,6 +71,7 @@ MODEL_SPEC = spec.ModelSpec(
                 ),
             ]
         ),
+
         # ########## Uncomment for Version 2 ##################################
         # spec.VectorInput(
         #     id="aoi_path",
@@ -81,6 +82,8 @@ MODEL_SPEC = spec.ModelSpec(
         #     geometry_types={"POLYGON", "MULTIPOLYGON"},
         #     fields=[]
         # ),
+        #######################################################################
+
         # ########## Uncomment for Version 3 ##################################
         # spec.CSVInput(
         #     id="birb_population_density_table",
@@ -107,6 +110,8 @@ MODEL_SPEC = spec.ModelSpec(
         #         )
         #     ]
         # )
+        #######################################################################
+
     ],
     outputs=[
         spec.SingleBandRasterOutput(
@@ -116,6 +121,7 @@ MODEL_SPEC = spec.ModelSpec(
             data_type=float,
             units=u.none
         ),
+
         # ############ Uncomment for Version 2 ################################
         # spec.VectorOutput(
         #     id="aggregated_results_vector",
@@ -129,6 +135,8 @@ MODEL_SPEC = spec.ModelSpec(
         #         units=u.none
         #     )]
         # ),
+        #######################################################################
+
         # ############# Uncomment for Version 3 ###############################
         # spec.SingleBandRasterOutput(
         #     id="[GROUP]_count_raster",
@@ -137,6 +145,8 @@ MODEL_SPEC = spec.ModelSpec(
         #     data_type=float,
         #     units=u.none
         # )
+        #######################################################################
+
     ]
 )
 
@@ -283,7 +293,6 @@ def execute(args):
     #     target_nodata=-1,
     #     target_dtype=float)
     ###########################################################################
-
 
     # ############# Uncomment for Version 2 ###################################
     # # Aggregate by AOI geometries
