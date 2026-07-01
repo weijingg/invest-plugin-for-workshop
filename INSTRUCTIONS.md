@@ -15,7 +15,7 @@ You may also want to have the following **optional** tools installed:
 Some familiarity with Python will be helpful, but is not required.
 
 ## Phase 1
-1. First, you'll need a copy of the source code. Navigate to the [Birb Habitat plugin repo](https://github.com/natcap/invest-plugin-for-workshop) and select the `Code` button.
+1. First, you'll need a copy of the source code. Navigate to the [Birb Habitat plugin repo](https://github.com/natcap/invest-plugin-for-workshop) and press the `Code` button.
 
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./images/clone_repo-dark.png">
@@ -156,6 +156,7 @@ Want to push the Birb Habitat model—and your skills—even further? See if you
     - **birb_count_alt.tif**
     - **aggregated_results_alt.gpkg**
     - **birb_count_increase.tif**
+    - **[GROUP]_count_increase.tif**
 
     How and where you add these items to the report is up to you—if you were trying to make sense of the model's results at a glance, how would you want to see them organized? If you're still not sure, or you'd like to see some examples, check out the [Sample Carbon Report](https://storage.googleapis.com/releases.naturalcapitalproject.org/invest-reports/latest/carbon_report_willamette.html) (for baseline/alternate results, a difference map, and an alternate LULC) and/or any of the other [Sample InVEST Reports](http://releases.naturalcapitalproject.org/?prefix=invest-reports/latest/) (for various ways to present vector results).
 
